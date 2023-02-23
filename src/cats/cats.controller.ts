@@ -2,11 +2,13 @@ import {
   Controller,
   Delete,
   Get,
-  HttpException,
+  Param,
+  ParseIntPipe,
   Patch,
   Post,
   Put,
 } from '@nestjs/common';
+import { PositiveIntPipe } from 'src/common/pipes/positiveInt.pipe';
 import { CatsService } from './cats.service';
 
 @Controller('cats')
@@ -15,13 +17,12 @@ export class CatsController {
 
   @Get()
   getAllCat() {
-    throw new HttpException('No Authorization!', 401);
     return 'all cat';
   }
 
   @Get(':id')
-  getOneCat() {
-    return 'one cat';
+  getOneCat(@Param('id', ParseIntPipe, PositiveIntPipe) param: number) {
+    return param;
   }
 
   @Post()
