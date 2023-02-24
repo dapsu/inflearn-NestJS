@@ -20,7 +20,7 @@ export class CatsController {
 
   @Get()
   getAllCat() {
-    return 'all cat';
+    return { cats: 'all cats' };
   }
 
   @Get(':id')
