@@ -1,4 +1,6 @@
 import { Body, Controller, Get, Post, UseInterceptors } from '@nestjs/common';
+import { AuthService } from 'src/auth/auth.service';
+import { LoginRequestDto } from 'src/auth/dto/login.request.dto';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
 import { CatsService } from './cats.service';
 import { CatRequestDto } from './dto/cats.request.dto';
@@ -6,7 +8,10 @@ import { CatRequestDto } from './dto/cats.request.dto';
 @Controller('cats')
 @UseInterceptors(SuccessInterceptor)
 export class CatsController {
-  constructor(private readonly catsService: CatsService) {}
+  constructor(
+    private readonly catsService: CatsService,
+    private readonly authService: AuthService,
+  ) {}
 
   @Get()
   getCurrentCat() {
@@ -18,9 +23,9 @@ export class CatsController {
     return await this.catsService.signUp(body);
   }
 
-  @Post()
-  logIn() {
-    return 'log in';
+  @Post('login')
+  logIn(@Body() data: LoginRequestDto) {
+    return this.authService.jwtLogin(data);
   }
 
   @Post()
